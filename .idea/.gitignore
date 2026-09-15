@@ -5,3 +5,4 @@
 /httpRequests/
 # Django PowerTools cache (generated)
 /djangoPowerTools/
+.env

@@ -21,6 +21,10 @@ from app import views
 
 urlpatterns = [
     path('', views.Home.as_view(), name='home'),
-    path('login/', auth_views.LoginView.as_view(template_name='form.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('gerenciar-animais/',views.GerenciarAnimaisCadastrados.as_view(),name='gerenciar-animais'),
+    path('gerenciar-animais/cadastro/',views.AnimalCreateView.as_view(),name='cadastrar-animal'),
+    path('gerenciar-animais/editar/<int:pk>/',views.AnimalUpdateView.as_view(),name='editar-animal'),
+    path('gerenciar-animais/excluir/<int:pk>/', views.AnimalDeleteView.as_view(), name='excluir-animal'),
 ]

@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load cloudinary %}
+{% block content %}
+{% if user.is_superuser %}
+<div class="d-flex justify-content-between mb-1">
+	<h3>Animais</h3>
+	<a class="btn btn-primary" href="{% url 'cadastrar-animal' %}">Cadastrar Novo Animal</a>
+</div>
+	<hr>
+	<table class="table table-striped table-hover table-bordered text-center">
+		<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Foto</th>
+			<th scope="col">Sexo</th>
+			<th scope="col">Idade Aproximada</th>
+			<th scope="col">Porte</th>
+			<th scope="col">Vacinado(a)</th>
+			<th scope="col">Castrado(a)</th>
+			<th scope="col">Status</th>
+			<th scope="col">Opções</th>
+		</tr>
+		</thead>
+		<tbody class="table-group-divider">
+		{% for animal in object_list %}
+		<tr>
+			<th scope="row">{{ forloop.counter }}</th>
+			<td>
+				<div data-bs-toggle="modal" data-bs-target="#foto_{{ forloop.counter }}" style="cursor: pointer;">
+					{% cloudinary animal.foto.name width=70 height=70 %}
+				</div>
+				<div class="modal fade" id="foto_{{ forloop.counter }}" data-bs-backdrop="static"
+					 data-bs-keyboard="false" tabindex="-1" aria-labelledby="Foto do animal ampliada" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-body">
+								{% cloudinary animal.foto.name width=300 height=300 %}
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</td>
+			<td>{{ animal.get_sexo_display }}</td>
+			<td>{{ animal.idade_aproximada }}</td>
+			<td>{{ animal.get_porte_display }}</td>
+			<td>{{ animal.vacinado|yesno:"Sim,Não" }}</td>
+			<td>{{ animal.castrado|yesno:"Sim,Não" }}</td>
+			<td>{{ animal.get_status_display }}</td>
+			<td>
+				<button type="button" class="btn btn-secondary" title="Ver informações adicionais" data-bs-toggle="modal" data-bs-target="#informacoes_{{ forloop.counter }}">
+					<i class="fa-solid fa-eye"></i>
+				</button>
+				<div class="modal fade" id="informacoes_{{ forloop.counter }}" data-bs-backdrop="static"
+					 data-bs-keyboard="false" tabindex="-1" aria-labelledby="Mais informações" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Mais informações do Animal</h5>
+							</div>
+							<div class="modal-body">
+								<p>{{ animal.mais_informacoes }}</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a href="{% url 'editar-animal' animal.pk %}" class="btn btn-secondary" title="Editar Animal">
+					<i class="fa-solid fa-pen-to-square"></i>
+				</a>
+				<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_item_{{ forloop.counter }}" title="Excluir">
+					<i class="fa-solid fa-trash"></i>
+				</button>
+				<div class="modal fade" id="delete_item_{{ forloop.counter }}" data-bs-backdrop="static"
+					 data-bs-keyboard="false" tabindex="-1" aria-labelledby="Excluir animal" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="delete_item_label">Exlcuir Animal Cadastrado</h5>
+							</div>
+
+							<form action="{% url 'excluir-animal' animal.pk %}" method="post">
+								{% csrf_token %}
+
+								<div class="modal-body">
+									<p>Tem certeza que deseja excluir este animal?</p>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar
+									</button>
+									<button type="submit" class="btn btn-danger" value="Confirm">Excluir</button>
+								</div>
+							</form>
+
+						</div>
+					</div>
+				</div>
+			</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+{% endif %}
+{% endblock %}

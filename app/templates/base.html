@@ -13,10 +13,10 @@
 	<script src="https://kit.fontawesome.com/b5718073e0.js" crossorigin="anonymous"></script>
 </head>
 <body>
-	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+	<nav class="navbar navbar-expand-lg" style="background-color: #f2f2f2;">
 		<div class="container">
 			<div class="d-flex">
-				<span class="navbar-brand">ONG</span>
+				<span class="navbar-brand fw-bold">ONG</span>
 				<a class="icon-link text-decoration-none" href="{% url 'home' %}">
 					<i class="fa-solid fa-house"></i>
 					<span class="text-decoration-underline">Home</span>
@@ -25,7 +25,7 @@
 			</div>
 
 			<div class="d-flex">
-				{% if user.is_authenticated %}
+				{% if user.is_authenticated and user.is_superuser %}
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -35,7 +35,7 @@
 						<ul class="dropdown-menu">
 							<li><a class="dropdown-item" href="#">Minha Conta</a></li>
 							{% if user.is_superuser %}
-							<li><a class="dropdown-item" href="#">Painel Administrativo</a></li>
+							<li><a class="dropdown-item" href="{% url 'gerenciar-animais' %}">Cadastrar Animais</a></li>
 							{% endif %}
 							<li>
 								<hr class="dropdown-divider">
@@ -43,18 +43,19 @@
 							<li>
 								<form action="{% url 'logout' %}" method="post">
 									{% csrf_token %}
-									<button type="submit" class="dropdown-item">Log out</button>
+									<button type="submit" class="dropdown-item">Sair</button>
 								</form>
 							</li>
 						</ul>
 					</li>
 				</ul>
-				{% else %}
-				<a class="btn btn-primary fw-bold" href="{% url 'login' %}">Entrar</a>
 				{% endif %}
 			</div>
 		</div>
 	</nav>
+	<!--
+		Futuramente pode ser usado quando houver as demais funcionalidades
+
 	<nav class="navbar navbar-expand-lg" style="background-color: #f2f2f2;">
 		<div class="container">
 			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -70,8 +71,8 @@
 				</div>
 			</div>
 		</div>
-	</nav>
-	<main class="container position-absolute top-50 start-50 translate-middle">
+	</nav>-->
+	<main class="container my-5 pb-3">
 		{% block content %}{% endblock %}
 	</main>
 
