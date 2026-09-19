@@ -1,6 +1,19 @@
 {% extends 'base.html' %}
 
 {% load static %}
-
+{% load cloudinary %}
 {% block content %}
+<h2>Lista de animais para adoção</h2>
+<hr>
+<div class="d-flex gap-3 mt-4">
+	{% for animal in animais %}
+		<div class="card" style="width: 250px">
+		  	<img src="{{animal.foto.url}}" class="card-img-top" alt="{{animal.foto.name}}" height="250">
+		  	<div class="card-body">
+				<h5 class="card-title">{{ animal.get_sexo_display }}, {{ animal.idade_aproximada }}</h5>
+				<a href="#" class="btn btn-primary">Ver mais</a>
+		  	</div>
+		</div>
+	{% endfor %}
+</div>
 {% endblock %}

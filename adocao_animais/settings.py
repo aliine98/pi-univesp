@@ -12,10 +12,11 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 from pathlib import Path
 
-import cloudinary
 import environ
 import os
+import pymysql
 
+pymysql.install_as_MySQLdb()
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
@@ -37,7 +38,6 @@ SECRET_KEY = env('DJANGO_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 

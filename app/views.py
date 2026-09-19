@@ -6,9 +6,13 @@ from app.models import Animal
 
 
 # Create your views here.
+#class Home(TemplateView):
+#    template_name = 'home.html'
 
-class Home(TemplateView):
+class Home(ListView):
     #inicialmente só listagem de animais
+    queryset = Animal.objects.filter(status=Animal.Status.DISPONIVEL)
+    context_object_name = "animais"
     template_name = 'animais.html'
 
 class GerenciarAnimaisCadastrados(ListView):
