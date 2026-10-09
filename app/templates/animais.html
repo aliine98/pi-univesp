@@ -1,17 +1,43 @@
 {% extends 'base.html' %}
 
 {% load static %}
-{% load cloudinary %}
 {% block content %}
 <h2>Lista de animais para adoção</h2>
 <hr>
-<div class="d-flex gap-3 mt-4">
+<div class="d-flex gap-3 mt-4 flex-wrap justify-content-center justify-content-sm-start">
 	{% for animal in animais %}
 		<div class="card" style="width: 250px">
 		  	<img src="{{animal.foto.url}}" class="card-img-top" alt="Foto do animal" height="250">
 		  	<div class="card-body">
 				<h5 class="card-title">{{ animal.get_sexo_display }}, {{ animal.idade_aproximada }}</h5>
-				<a href="#" class="btn btn-primary">Ver mais</a>
+				<ul style="font-size: 15px;">
+					<li><b>Porte:</b> {{ animal.get_porte_display }}</li>
+					<li><b>Vacinado:</b> {{ animal.vacinado|yesno:"Sim,Não" }}</li>
+					<li><b>Castrado:</b> {{ animal.castrado|yesno:"Sim,Não" }}</li>
+					<li style="list-style:none;translate:-20px;">
+						<a title="Clique para ver informações adicionais" class="link-underline-primary link-offset-1" href=""
+						   data-bs-toggle="modal" data-bs-target="#informacoes_{{ forloop.counter }}"><b>Mais Informações</b></a>
+					</li>
+				</ul>
+				<div class="modal fade" id="informacoes_{{ forloop.counter }}" data-bs-backdrop="static"
+					 data-bs-keyboard="false" tabindex="-1" aria-labelledby="Mais informações" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Mais informações do Animal</h5>
+							</div>
+							<div class="modal-body text-start">
+								<p>{{ animal.mais_informacoes|default:"Não informado" }}</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<a href="{{ animal.whatsapp_url }}" class="btn btn-success justify-content-center d-flex gap-2 align-items-center" style="font-size:17px;">
+					Tenho interesse <i class="fa-brands fa-whatsapp"></i>
+				</a>
 		  	</div>
 		</div>
 	{% endfor %}

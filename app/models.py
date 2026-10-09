@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
@@ -32,10 +34,10 @@ class Animal(models.Model):
     criado_em = models.DateTimeField("Criado em", auto_now_add=True)
     adotado_em = models.DateTimeField("Adotado em", blank=True, null=True)
 
-    def get_absolute_url(self):
-        from django.urls import reverse
-
-        return reverse("animal", kwargs={"pk": self.pk})
+    @property
+    def whatsapp_url(self):
+        texto = f"Olá! Tenho interesse em adotar o animal de código #{self.pk}."
+        return f"https://wa.me/5519997409819?text={quote(texto)}"
 
     def save(self, *args, **kwargs):
         if self.status == self.Status.ADOTADO and self.adotado_em is None:
