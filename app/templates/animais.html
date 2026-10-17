@@ -1,8 +1,67 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load cloudinary %}
+{% block title %}Home - Adotar Animais{% endblock %}
 {% block content %}
-<h2>Lista de animais para adoção</h2>
+<div class="d-flex justify-content-between align-items-center">
+	<h2>Lista de animais para adoção</h2>
+	<div class="dropdown">
+		<button class="btn btn-primary dropdown-toggle" role="button" data-bs-toggle="dropdown"
+				aria-expanded="false">
+			Filtros
+		</button>
+		<form action="?" method="GET">
+			<ul class="dropdown-menu px-3 py-2">
+				<li>
+					<label for="filtro_porte">Porte:</label>
+					<select name="porte" class="form-select" id="filtro_porte" aria-label="Filtar por porte">
+						<option value="">Selecione...</option>
+						{% for porte in portes %}
+							<option value="{{ porte.name }}" {% if request.GET.porte == porte.name %}selected{% endif %}>{{ porte.label }}</option>
+						{% endfor %}
+					</select>
+				</li>
+				<li>
+					<label for="filtro_sexo">Sexo:</label>
+					<select name="sexo" class="form-select" id="filtro_sexo" aria-label="Filtrar por sexo">
+						<option value="">Selecione...</option>
+						{% for sexo in sexos %}
+							<option value="{{ sexo.name }}" {% if request.GET.sexo == sexo.name %}selected{% endif %}>{{ sexo.label }}</option>
+						{% endfor %}
+					</select>
+				</li>
+				<li>
+					<label for="filtro_vacinado">Vacinado:</label>
+					<select name="vacinado" class="form-select" id="filtro_vacinado" aria-label="Filtrar por vacinado">
+						<option value="">Selecione...</option>
+						<option value="True" {% if request.GET.vacinado == "True" %}selected{% endif %}>Sim</option>
+						<option value="False" {% if request.GET.vacinado == "False" %}selected{% endif %}>Não</option>
+					</select>
+				</li>
+				<li>
+					<label for="filtro_castrado">Castrado:</label>
+					<select name="castrado" class="form-select" id="filtro_castrado" aria-label="Filtrar por castrado">
+						<option value="">Selecione...</option>
+						<option value="True" {% if request.GET.castrado == "True" %}selected{% endif %}>Sim</option>
+						<option value="False" {% if request.GET.castrado == "False" %}selected{% endif %}>Não</option>
+					</select>
+				</li>
+				<li>
+					<label for="filtro_idade">Idade Aproximada:</label>
+					<input type="text" name="idade" class="form-control" id="filtro_idade" aria-label="Filtrar por idade" placeholder="Ex: 1 ano" value="{{ request.GET.idade }}"/>
+				</li>
+				<li>
+					<hr class="dropdown-divider">
+				</li>
+				<li class="d-flex gap-3">
+					<button type="submit" class="btn btn-primary">Filtrar</button>
+					<a href="{% url 'home' %}" class="btn btn-secondary">Limpar</a>
+				</li>
+			</ul>
+		</form>
+	</div>
+</div>
 <hr>
 <div class="d-flex gap-3 mt-4 flex-wrap justify-content-center justify-content-sm-start">
 	{% for animal in animais %}
@@ -35,11 +94,13 @@
 						</div>
 					</div>
 				</div>
-				<a href="{{ animal.whatsapp_url }}" class="btn btn-success justify-content-center d-flex gap-2 align-items-center" style="font-size:17px;">
-					Tenho interesse <i class="fa-brands fa-whatsapp"></i>
+				<a href="{{ animal.whatsapp_url }}" target="_blank" class="btn btn-success justify-content-center d-flex gap-2 align-items-center" style="font-size:17px;">
+					Tenho interesse <i class="fa-brands fa-whatsapp" style="font-size:20px;"></i>
 				</a>
 		  	</div>
 		</div>
+	{% empty %}
+		<div><h4 class="text-body-secondary">Nenhum Animal Encontrado</h4></div>
 	{% endfor %}
 </div>
 {% endblock %}
