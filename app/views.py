@@ -1,4 +1,7 @@
 from braces.views import GroupRequiredMixin
+from django.contrib.auth.models import User
+from django.contrib.auth.views import PasswordChangeView, PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -81,21 +84,41 @@ class GerenciarAnimaisCadastrados(GroupRequiredMixin,ListView):
                 animais = animais.none()
         return animais
 
-class AnimalCreateView(GroupRequiredMixin,CreateView):
+class AnimalCreateView(GroupRequiredMixin,SuccessMessageMixin,CreateView):
     group_required = u"Ong"
     model = Animal
     fields = ["foto","sexo","idade_aproximada","porte","vacinado","castrado","mais_informacoes","status"]
     template_name = "cadastrar-animal.html"
     success_url = reverse_lazy("gerenciar-animais")
+    success_message = "Animal cadastrado com sucesso!"
 
-class AnimalUpdateView(GroupRequiredMixin,UpdateView):
+class AnimalUpdateView(GroupRequiredMixin,SuccessMessageMixin,UpdateView):
     group_required = u"Ong"
     model = Animal
     fields = ["foto", "sexo", "idade_aproximada", "porte", "vacinado", "castrado", "mais_informacoes", "status"]
     template_name = "cadastrar-animal.html"
     success_url = reverse_lazy("gerenciar-animais")
+    success_message = "Animal atualizado com sucesso!"
 
-class AnimalDeleteView(GroupRequiredMixin,DeleteView):
+class AnimalDeleteView(GroupRequiredMixin,SuccessMessageMixin,DeleteView):
     group_required = u"Ong"
     model = Animal
     success_url = reverse_lazy("gerenciar-animais")
+    success_message = "Animal excluído com sucesso!"
+
+class UsuarioUpdateView(GroupRequiredMixin, SuccessMessageMixin, UpdateView):
+    group_required = u"Ong"
+    model = User
+    fields = ['username']
+    template_name = "minha-conta.html"
+    success_url = reverse_lazy("minha-conta")
+    success_message = "Usuário atualizado com sucesso!"
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+class SenhaUpdateView(GroupRequiredMixin,SuccessMessageMixin,PasswordChangeView):
+    group_required = u"Ong"
+    template_name = 'mudar-senha.html'
+    success_message = "Senha atualizada com sucesso!"
+    success_url = reverse_lazy("minha-conta")

@@ -10,8 +10,15 @@
 			integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
 			crossorigin="anonymous"></script>
 	{% load static %}
-	<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css"/>
 	<script src="https://kit.fontawesome.com/b5718073e0.js" crossorigin="anonymous"></script>
+	<style>
+		@media (max-width:990px) {
+			.table-responsive-wrapper {
+				max-width: 700px;
+				overflow-x: auto;
+			}
+		}
+	</style>
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg" style="background-color: #f2f2f2;">
@@ -34,8 +41,8 @@
 							{{ user.username }}
 						</a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">Minha Conta</a></li>
-							<li><a class="dropdown-item" href="{% url 'gerenciar-animais' %}">Cadastrar Animais</a></li>
+							<li><a class="dropdown-item" href="{% url 'minha-conta' %}">Minha Conta</a></li>
+							<li><a class="dropdown-item" href="{% url 'gerenciar-animais' %}">Gerenciar Animais</a></li>
 							<li>
 								<hr class="dropdown-divider">
 							</li>
@@ -52,6 +59,24 @@
 			</div>
 		</div>
 	</nav>
+	{% if messages %}
+		<div class="messages">
+			{% for message in messages %}
+				<div class="container-fluid position-fixed top-0 end-0 pt-4 pe-5" style="z-index: 100;width: fit-content;">
+					<div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+						{{ message }}
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<script>
+			const btns = document.querySelectorAll('.btn-close');
+			setTimeout(() => {
+				btns.forEach((btn) => btn.click());
+			}, 5000);
+		</script>
+	{% endif %}
 	<!--
 		Futuramente pode ser usado quando houver as demais funcionalidades
 

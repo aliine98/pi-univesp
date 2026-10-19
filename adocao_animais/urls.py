@@ -29,4 +29,6 @@ urlpatterns = [
     path('gerenciar-animais/cadastro/',views.AnimalCreateView.as_view(),name='cadastrar-animal'),
     path('gerenciar-animais/editar/<int:pk>/',views.AnimalUpdateView.as_view(),name='editar-animal'),
     path('gerenciar-animais/excluir/<int:pk>/', views.AnimalDeleteView.as_view(), name='excluir-animal'),
+    path('minha-conta/', views.UsuarioUpdateView.as_view(), name='minha-conta'),
+    path('minha-conta/senha/',views.SenhaUpdateView.as_view(),name='mudar-senha'),
 ]

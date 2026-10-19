@@ -23,7 +23,7 @@
 				</li>
 				<li>
 					<label for="filtro_status">Status:</label>
-					<select name="status" class="form-select" id="filtro_status" aria-label="Filtar por status">
+					<select name="status" class="form-select" id="filtro_status" aria-label="Filtar por status" style="width: fit-content;">
 						<option value="">Selecione...</option>
 						{% for s in status %}
 							<option value="{{ s.name }}" {% if request.GET.status == s.name %}selected{% endif %}>{{ s.label }}</option>
@@ -79,7 +79,8 @@
 		</form>
 	</div>
 </div>
-<table class="table table-striped table-hover table-bordered text-center">
+<div class="table-responsive-wrapper">
+<table class="table table-striped table-hover table-bordered text-center align-middle">
 	<thead>
 	<tr>
 		<th scope="col">Código</th>
@@ -180,4 +181,5 @@
 	{% endfor %}
 	</tbody>
 </table>
+	</div>
 {% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+{% block title %}Minha Conta{% endblock %}
+
+{% block content %}
+
+<div>
+	<h3>Minha conta</h3>
+	<hr>
+	<div class="col col-lg-6">
+		<div class="w-100">
+			<form action="" method="POST">
+
+				{% csrf_token %}
+
+				{{ form|crispy }}
+				<a href="{% url 'mudar-senha' %}" class="link-underline-primary link-offset-1 tw-bold">Alterar Senha</a><br/>
+				<button type="submit" class="btn btn-primary mt-3">Salvar</button>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
